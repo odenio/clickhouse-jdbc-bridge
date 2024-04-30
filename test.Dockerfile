@@ -3,8 +3,9 @@
 # `mvn -DskipTests clean package && docker build -f test.Dockerfile -t clickhouse-jdbc-bridge:$(git rev-parse --short head) .`
 #
 ARG revision=latest
-ARG platform=linux/amd64
-FROM --platform=$platform adoptopenjdk/openjdk8-openj9:jre8u322-b06_openj9-0.30.0-ubuntu
+ARG platform=linux/arm64
+#FROM --platform=$platform adoptopenjdk/openjdk8-openj9:jre8u322-b06_openj9-0.30.0-ubuntu
+FROM --platform=$platform maven:3-eclipse-temurin-17-focal
 
 # Labels
 LABEL app_name="ClickHouse JDBC Bridge"
