@@ -461,7 +461,7 @@ public class JdbcDataSource extends NamedDataSource {
             this.initQuoteIdentifier(conn);
 
             try {
-                conn.setAutoCommit(true);
+                conn.setAutoCommit(false);
             } catch (Throwable e) {
                 log.warn("Failed to enable auto-commit due to {}", e.getMessage());
             }
