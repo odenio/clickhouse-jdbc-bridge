@@ -19,16 +19,7 @@ import static com.clickhouse.jdbcbridge.core.DataType.*;
 
 import java.io.Closeable;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +33,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * This class defines a named datasource. It's the base class of all other types
  * of datasources.
- * 
+ *
  * @since 2.0
  */
 public class NamedDataSource extends ManagedEntity implements Closeable {
@@ -504,7 +495,7 @@ public class NamedDataSource extends ManagedEntity implements Closeable {
 
         /*
          * DataColumnList allColumns = query.getColumns(params);
-         * 
+         *
          * for (int i = additionalColumns.size(); i < requestColumns.size(); i++) {
          * DataColumn r = requestColumns.getColumn(i); for (int j = 0; j <
          * allColumns.size(); j++) { if
@@ -538,7 +529,9 @@ public class NamedDataSource extends ManagedEntity implements Closeable {
 
     public final void executeQuery(String schema, String originalQuery, String loadedQuery, TableDefinition columns,
             QueryParameters params, ResponseWriter writer) {
-        log.info("Executing query(schema=[{}]):\n{}", schema, loadedQuery);
+        long executionStartTime = System.currentTimeMillis();
+        UUID queryId = java.util.UUID.randomUUID();
+        log.warn("Query {} Executing query(schema=[{}]):\n{}", queryId, schema, loadedQuery);
 
         ColumnDefinition[] customColumns = this.customColumns.toArray(new ColumnDefinition[this.customColumns.size()]);
         if (params.isDebug()) {
@@ -553,6 +546,7 @@ public class NamedDataSource extends ManagedEntity implements Closeable {
                         this.getDefaultValues(), writer);
             }
         }
+        log.warn("Query {} Finished in {} ms.", queryId, System.currentTimeMillis() - executionStartTime);
     }
 
     public void executeMutation(String schema, String target, TableDefinition columns, QueryParameters parameters,
