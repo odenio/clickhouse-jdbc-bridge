@@ -191,6 +191,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- JavaScript engine for tests (Nashorn removed from JDK 15+) -->
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+            <version>15.4</version>
+        </dependency>
     </dependencies>
 
     <!-- http://central.sonatype.org/pages/apache-maven.html -->

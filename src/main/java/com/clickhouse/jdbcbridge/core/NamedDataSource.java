@@ -531,7 +531,7 @@ public class NamedDataSource extends ManagedEntity implements Closeable {
             QueryParameters params, ResponseWriter writer) {
         long executionStartTime = System.currentTimeMillis();
         UUID queryId = java.util.UUID.randomUUID();
-        log.warn("Query {} Executing query(schema=[{}]):\n{}", queryId, schema, loadedQuery);
+        log.warn("query_id {} Executing query(schema=[{}]):\n{}", queryId, schema, loadedQuery);
 
         ColumnDefinition[] customColumns = this.customColumns.toArray(new ColumnDefinition[this.customColumns.size()]);
         if (params.isDebug()) {
@@ -546,7 +546,7 @@ public class NamedDataSource extends ManagedEntity implements Closeable {
                         this.getDefaultValues(), writer);
             }
         }
-        log.warn("Query {} Finished in {} ms.", queryId, System.currentTimeMillis() - executionStartTime);
+        log.warn("query_id {} Finished in {} ms.", queryId, System.currentTimeMillis() - executionStartTime);
     }
 
     public void executeMutation(String schema, String target, TableDefinition columns, QueryParameters parameters,
