@@ -19,6 +19,11 @@ under the License.
 
 This project includes:
   Apache Commons Compress under Apache License, Version 2.0
+  asm under BSD-3-Clause
+  asm-analysis under BSD-3-Clause
+  asm-commons under BSD-3-Clause
+  asm-tree under BSD-3-Clause
+  asm-util under BSD-3-Clause
   Caffeine cache under Apache License, Version 2.0
   Checker Qual under The MIT License
   ClickHouse JDBC Bridge under Apache License, Version 2.0
@@ -61,6 +66,7 @@ This project includes:
   Netty/Resolver/DNS under Apache License, Version 2.0
   Netty/TomcatNative [OpenSSL - Classes] under The Apache Software License, Version 2.0
   Netty/Transport under Apache License, Version 2.0
+  OpenJDK Nashorn under GPL v2 with the Classpath exception
   Prometheus Java Simpleclient under The Apache Software License, Version 2.0
   Prometheus Java Simpleclient Common under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License

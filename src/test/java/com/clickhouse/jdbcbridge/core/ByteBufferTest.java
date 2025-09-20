@@ -27,6 +27,53 @@ import org.testng.annotations.Test;
 
 public class ByteBufferTest {
     @Test(groups = { "unit" })
+    public void testWriteDateAcrossTimeZones() {
+        String[] tzIds = new String[] {
+                "UTC",
+                "America/Los_Angeles",
+                "America/New_York",
+                "Europe/London",
+                "Europe/Berlin",
+                "Asia/Kolkata",
+                "Asia/Tokyo",
+                "Australia/Sydney"
+        };
+
+        TimeZone original = TimeZone.getDefault();
+        try {
+            long[] millisValues = new long[] {
+                    0L, // lower bound - will be clamped to 1
+                    MILLIS_IN_DAY, // exactly day 1
+                    2L * MILLIS_IN_DAY + 12345L, // middle of day 2
+                    65535L * MILLIS_IN_DAY, // max representable day
+                    70000L * MILLIS_IN_DAY // overflow - will be clamped to 65535
+            };
+
+            for (String id : tzIds) {
+                TimeZone.setDefault(TimeZone.getTimeZone(id));
+
+                for (long millis : millisValues) {
+                    Date d = new Date(millis);
+                    ByteBuffer buf = ByteBuffer.newInstance(8);
+                    buf.writeDate(d);
+
+                    // compute expected days since epoch using UTC millis
+                    int expectedDays = (int) (millis / MILLIS_IN_DAY);
+                    // apply clamping rules of writeDate
+                    expectedDays = expectedDays <= 0 ? 1 : (expectedDays > U_INT16_MAX ? U_INT16_MAX : expectedDays);
+
+                    java.sql.Date expectedDate = new java.sql.Date((long) expectedDays * MILLIS_IN_DAY);
+                    java.sql.Date actual = buf.readDate();
+
+                    assertEquals(actual, expectedDate, "Mismatch for TZ=" + id + ", millis=" + millis);
+                }
+            }
+        } finally {
+            TimeZone.setDefault(original);
+        }
+    }
+
+    @Test(groups = { "unit" })
     public void testWriteBoolean() {
         ByteBuffer buffer = ByteBuffer.newInstance(100);
 

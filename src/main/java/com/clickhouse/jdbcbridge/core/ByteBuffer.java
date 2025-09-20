@@ -594,11 +594,8 @@ public final class ByteBuffer {
 
     public ByteBuffer writeDate(Date value) {
         Objects.requireNonNull(value);
-
-        TimeZone tz = this.timezone == null ? TimeZone.getDefault() : this.timezone;
         long time = value.getTime();
-        int daysSinceEpoch = (int) ((time + tz.getOffset(time)) / MILLIS_IN_DAY);
-
+        int daysSinceEpoch = (int) (time/ MILLIS_IN_DAY);
         // FIXME introduce strict mode to fix data issue only when needed
         return writeUInt16(daysSinceEpoch <= 0 ? 1 : (daysSinceEpoch > U_INT16_MAX ? U_INT16_MAX : daysSinceEpoch));
     }
